@@ -1,10 +1,10 @@
 
 import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Sphere, Text } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
-// DNA Base Component
+// Simple DNA Base Component
 const DNABase = ({ position, color, label }: { position: [number, number, number], color: string, label: string }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   
@@ -16,23 +16,19 @@ const DNABase = ({ position, color, label }: { position: [number, number, number
 
   return (
     <group position={position}>
-      <Sphere ref={meshRef} args={[0.3, 16, 16]}>
+      <mesh ref={meshRef}>
+        <sphereGeometry args={[0.3, 16, 16]} />
         <meshStandardMaterial color={color} />
-      </Sphere>
-      <Text
-        position={[0, 0.6, 0]}
-        fontSize={0.2}
-        color="black"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {label}
-      </Text>
+      </mesh>
+      <mesh position={[0, 0.6, 0]}>
+        <planeGeometry args={[0.4, 0.2]} />
+        <meshBasicMaterial color="white" />
+      </mesh>
     </group>
   );
 };
 
-// DNA Helix Component
+// Simple DNA Helix Component
 const DNAHelix = () => {
   const groupRef = useRef<THREE.Group>(null);
   
@@ -49,8 +45,6 @@ const DNAHelix = () => {
     { pos: [-1.5, 1, 1] as [number, number, number], color: "#96ceb4", label: "C" },
     { pos: [2, 0, 2] as [number, number, number], color: "#ffd93d", label: "A" },
     { pos: [-2, 0, 2] as [number, number, number], color: "#ff9ff3", label: "T" },
-    { pos: [1.5, -1, 3] as [number, number, number], color: "#ff6b6b", label: "A" },
-    { pos: [-1.5, -1, 3] as [number, number, number], color: "#4ecdc4", label: "T" },
   ];
 
   return (
@@ -80,6 +74,65 @@ const DNAHelix = () => {
   );
 };
 
+// Simple Protein Structure
+const ProteinStructure = () => {
+  const groupRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.2;
+      groupRef.current.rotation.y = state.clock.elapsedTime * 0.1;
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {/* Protein chain */}
+      {Array.from({ length: 8 }).map((_, i) => (
+        <mesh key={i} position={[Math.cos(i) * 2, i * 0.5 - 2, Math.sin(i) * 2]}>
+          <sphereGeometry args={[0.2, 8, 8]} />
+          <meshStandardMaterial color={`hsl(${i * 45}, 70%, 60%)`} />
+        </mesh>
+      ))}
+    </group>
+  );
+};
+
+// Simple Cell Structure
+const CellStructure = () => {
+  const groupRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y = state.clock.elapsedTime * 0.05;
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {/* Cell membrane */}
+      <mesh>
+        <sphereGeometry args={[3, 32, 32]} />
+        <meshStandardMaterial color="#88ccff" transparent opacity={0.3} />
+      </mesh>
+      
+      {/* Nucleus */}
+      <mesh>
+        <sphereGeometry args={[1, 16, 16]} />
+        <meshStandardMaterial color="#ff8888" />
+      </mesh>
+      
+      {/* Organelles */}
+      {Array.from({ length: 6 }).map((_, i) => (
+        <mesh key={i} position={[Math.cos(i) * 2, Math.sin(i) * 2, Math.cos(i * 2)]}>
+          <sphereGeometry args={[0.3, 8, 8]} />
+          <meshStandardMaterial color="#88ff88" />
+        </mesh>
+      ))}
+    </group>
+  );
+};
+
 const MolecularVisualization = () => {
   const [selectedMolecule, setSelectedMolecule] = useState("DNA");
 
@@ -89,15 +142,33 @@ const MolecularVisualization = () => {
     { name: "Cell", description: "Basic cellular components and organelles" }
   ];
 
+  const renderMolecule = () => {
+    switch (selectedMolecule) {
+      case "DNA":
+        return <DNAHelix />;
+      case "Protein":
+        return <ProteinStructure />;
+      case "Cell":
+        return <CellStructure />;
+      default:
+        return <DNAHelix />;
+    }
+  };
+
   return (
     <div className="w-full h-full relative">
       {/* 3D Canvas */}
-      <Canvas camera={{ position: [5, 5, 5], fov: 60 }}>
+      <Canvas 
+        camera={{ position: [5, 5, 5], fov: 60 }}
+        onCreated={({ gl }) => {
+          gl.setClearColor('#f0f9ff');
+        }}
+      >
         <ambientLight intensity={0.6} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
+        <directionalLight position={[10, 10, 10]} intensity={1} />
         <pointLight position={[-10, -10, -10]} intensity={0.5} />
         
-        {selectedMolecule === "DNA" && <DNAHelix />}
+        {renderMolecule()}
         
         <OrbitControls 
           enablePan={true} 

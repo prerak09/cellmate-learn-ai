@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +41,7 @@ const AIChat = () => {
     setIsLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       
       const biologyPrompt = `You are CellMate, an expert AI biology tutor. Your goal is to help students understand biology concepts clearly and engagingly. 
       

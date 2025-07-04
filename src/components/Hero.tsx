@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
-
 interface HeroProps {
   onTryDemo: () => void;
 }
-
-const Hero = ({ onTryDemo }: HeroProps) => {
-  return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+const Hero = ({
+  onTryDemo
+}: HeroProps) => {
+  return <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
@@ -37,13 +36,7 @@ const Hero = ({ onTryDemo }: HeroProps) => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button 
-              size="lg" 
-              className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105"
-              onClick={onTryDemo}
-            >
-              Try CellMate Free
-            </Button>
+            <Button size="lg" className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105" onClick={onTryDemo}>Try CellMate </Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -77,8 +70,6 @@ const Hero = ({ onTryDemo }: HeroProps) => {
           <ArrowDown className="w-6 h-6 text-gray-400" />
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Hero;

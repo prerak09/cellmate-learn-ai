@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +5,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, MessageSquare, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -15,33 +13,34 @@ const Contact = () => {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1000));
-
     toast({
       title: "Message Sent!",
-      description: "Thank you for contacting CellMate. We'll get back to you within 24 hours.",
+      description: "Thank you for contacting CellMate. We'll get back to you within 24 hours."
     });
-
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setFormData({
+      name: "",
+      email: "",
+      subject: "",
+      message: ""
+    });
     setIsSubmitting(false);
   };
-
-  return (
-    <div className="container mx-auto px-4">
+  return <div className="container mx-auto px-4">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
           Get in Touch
@@ -71,7 +70,7 @@ const Contact = () => {
               </div>
               <div>
                 <h4 className="font-semibold text-gray-800 mb-1">Email Support</h4>
-                <p className="text-gray-600">hello@cellmate.ai</p>
+                <p className="text-gray-600">preraktanwar123@gmail.com</p>
                 <p className="text-sm text-gray-500">Response within 24 hours</p>
               </div>
             </div>
@@ -119,78 +118,37 @@ const Contact = () => {
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                   Full Name
                 </label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full"
-                  placeholder="Enter your full name"
-                />
+                <Input id="name" name="name" type="text" value={formData.name} onChange={handleChange} required className="w-full" placeholder="Enter your full name" />
               </div>
 
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                   Email Address
                 </label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full"
-                  placeholder="Enter your email address"
-                />
+                <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required className="w-full" placeholder="Enter your email address" />
               </div>
 
               <div>
                 <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
                   Subject
                 </label>
-                <Input
-                  id="subject"
-                  name="subject"
-                  type="text"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="w-full"
-                  placeholder="What's this about?"
-                />
+                <Input id="subject" name="subject" type="text" value={formData.subject} onChange={handleChange} required className="w-full" placeholder="What's this about?" />
               </div>
 
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
                   Message
                 </label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  className="w-full h-32"
-                  placeholder="Tell us more about your needs..."
-                />
+                <Textarea id="message" name="message" value={formData.message} onChange={handleChange} required className="w-full h-32" placeholder="Tell us more about your needs..." />
               </div>
 
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white py-3 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-              >
+              <Button type="submit" disabled={isSubmitting} className="w-full bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white py-3 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
                 {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Contact;
